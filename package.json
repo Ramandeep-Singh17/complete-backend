@@ -4,14 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ramandeep-Singh17/complete-backend.git"
   },
   "keywords": [],
-  "author": "Ramandeep Singh",
+  "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ramandeep-Singh17/complete-backend/issues"
+  },
+  "homepage": "https://github.com/Ramandeep-Singh17/complete-backend#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongoose": "^9.3.3"
   }
 }

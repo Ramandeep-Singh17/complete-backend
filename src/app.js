@@ -1,64 +1,71 @@
-// server ko create karna
-
 const express = require('express');
-
+const noteModel = require('./models/note.model');
 const app = express();
-//middleware use karna
-app.use(express.json())
+app.use(express.json());
+//ye line ki help se req body me data jayega
+
+/*
+hm yaha different different api create karne wale hai
+POST/notes= create a new note
+GET/notes= get all notes
+PATCH/notes/:id= update a note
+DELETE/notes/:id= delete a note 
+*/
+
+app.post('/notes', async (req,res)=>{
+
+    const data= req.body  /*  {title, description} */
+   await noteModel.create({// ye await aync isliye kyuki hame nhi pata ki hamara server database se  connect karne me kitna time
+   //  legaga isliye hm await lagate hai taki jab tak hamara server database se connect nhi hota tab 
+   // tak ye aage ke code ko execute nhi karega
+        title:data.title,
+        description:data.description
+    })
+    res.status(201).json({
+        message:"Note created successfully"})
+})
+
+app.get('/notes', async (req,res)=>{
+    
+const notes =await noteModel.find({
+
+}) 
+
+// ye line hamare database me se sare notes ko find karega aur return karega
+// find hamesha ek array return karta hai chahe database me ek hi note ho ya bahut sare notes ho and
+//  ek bhi nhi hai tab empty array tab null return kareega
+// hm condition find and findone dono ke sath laga sakte hai.
+//find hamesha array deti hai agar na ho tab "empty array" deti hai.
+//findOne hamesha ek object deti hai agar na ho tab " null" deti hai
 
 
-
-//postman ke body se jo data aata hai express use read nhi kar sakta
-//  isliye hm middleware banate hai taki express us data ko read kar sake
-// postman fake froentend hai jisme hm apna data bhejte hai aur wo data backend me aata hai
-
-
-
-// hm notes app bana rhe hai jisme user apne notes ko create,  read, update aur delete
-//  kar sakta hai
-// user frontend per hai and wha se wo data dega and data frontend se aayega so hm 
-//post method ka use karenge data receive karne ke liye.
-
-const notes=[]
+res.status(200).json({
+    message:"Notes fetched successfully",
+    notes:notes
+})
+});
 
 
-// ye hmara notes api ban gya
-// "post" method ka use karenge data receive karne ke liye and usme bhi hm req per dhyan denge
-app.post('/notes', (req, res) => {
-    notes.push(req.body)  // frontend se jo data aayega usko notes array me push kar denge
+app.delete('/notes/:id', async (req,res)=>{
 
 
-    res.status(201).json({message: "note created successfully"})  
-    // frontend ko response me ek message bhej denge ki note create ho gya hai
-
-
-  console.log(req.body)
-  res.send(req.body)  // frontend se jo data aayega usko response me wapas bhej denge
-})  
-  // req.body me hmara data aayega jo frontend se aayega
-  // is data ko hm notes array me push kar denge
-  
-
-
-  // get se hmara data server se frontend  per jayega.
-  app.get('/notes', (req, res) => {
+    const id = req.params.id
+    await noteModel.findByIdAndDelete({
+        _id: id
+    })
     res.status(200).json({
-        message: "notes fetched successfully",
-        notes: notes
-    })  // frontend ko response me notes array bhej denge
-  })
+        message:"Note deleted successfully"
+    })
+})
 
-  // app.delete karna ek index ko
-    app.delete('/notes/:index', (req, res) => {
-        const index = req.params.index 
-        // req param se dynamically index ko change karta hai hai
-         // frontend se jo index aayega usko index variable me store kar denge
-        delete notes[ index ]  // notes array me se index ke hisab se ek element delete kar denge
-        res.status(200).json({
-            message: "note deleted successfully"
-        })  // frontend ko response me ek message bhej denge ki note delete ho gya hai
+app.patch('/notes/:id', async (req,res)=>{
+    const id = req.params.id
+    const description = req.body.description
+    await noteModel.findOneAndUpdate({_id:id},{description:description})
+    res.status(200).json({
+        message:"Note updated successfully"
     })
 
- 
+})
 
-module .exports = app
+module.exports = app;

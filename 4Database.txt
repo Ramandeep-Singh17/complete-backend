@@ -1,0 +1,127 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ DATABASE — NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Database Kya Hai?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Ek jagah jahan hm data store karte hain
+- Server band ho jaaye phir bhi data safe rehta hai
+- Server restart ke baad bhi data milta hai
+- Array se better — permanent storage hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 2. MongoDB Structure
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  MongoDB → Cluster → Database → Collection → Document
+
+  Cluster  = sabse bada container — bahut zyada security
+  Database = cluster ke andar — jaise "halley"
+  Collection = database ke andar — jaise "notes"
+  Document = ek record — jaise ek note
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 3. Hm Kaise Connect Karte Hain?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- MongoDB ka server Mumbai mein hai
+- Hm Delhi mein hain
+- Internet ke through apne server ko MongoDB se connect karte hain
+- Hazaron computers internet pe hain — isliye IP address se
+  uniquely identify karte hain ki kaun connect kar raha hai
+
+2 Layer of Security:
+  Layer 1 → Network Access  (IP address whitelist)
+  Layer 2 → Database Access (username + password)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 4. CRUD Operations
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Database mein mainly 4 operations hote hain:
+
+  C = Create  → naya data banana
+  R = Read    → data padhna/fetch karna
+  U = Update  → data update karna
+  D = Delete  → data delete karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 5. Database Users aur Roles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Har user ko alag access milta hai — sab kuch ka access nahi:
+
+  Atlas Admin          → sab kuch kar sakta hai, koi rok nahi
+  Read & Write any DB  → kuch bhi read/write kar sakta hai
+  Only Read            → sirf read kar sakta hai
+
+Real life example:
+  Spotify normal user  → sirf music sun sakta hai
+  Spotify artist       → music upload bhi kar sakta hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 6. Connection String
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  mongodb+srv://USERNAME:PASSWORD@cluster0.frkqyzb.mongodb.net/
+
+- Yeh link batata hai ki kis cluster se connect karna hai
+- Aur uska address kya hai
+- KABHI BHI GitHub pe mat daalo — .env mein rakho!
+
+.env file:
+  MONGODB_URL=mongodb+srv://username:password@cluster/dbname
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 7. db.js — Database Connect Karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  src/
+  └── db/
+      └── db.js   → database connection ka code
+
+  const mongoose = require('mongoose');
+  require('dotenv').config()
+
+  async function connectDB() {
+      await mongoose.connect(process.env.MONGODB_URL)
+      console.log("Database connected successfully");
+  }
+
+  module.exports = connectDB;
+
+- mongoose.connect() → powerful function hai jo server ko
+  database se connect karta hai
+- Agar database nahi hai toh khud create kar deta hai
+- await isliye lagaya — hm nahi jaante kitna time lagega
+  connect hone mein, isliye jab tak connect na ho
+  aage ka code execute nahi hoga
+- async function mein hi await use hota hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 8. Model (Schema) — Data Ka Structure
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Kuch bhi banane se pehle database ko batate hain ki
+  hamara data dikhta kaisa hai
+- src/models/ folder mein model files banti hain
+
+Jab note save hota hai tab automatically milta hai:
+  title       → humne diya
+  description → humne diya
+  __id        → MongoDB khud deta hai (unique id)
+  __v         → version number — Mongoose khud lagata hai
+
+  Har note ko unique id milti hai — Mongoose khud karta hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ IMPORTANT RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- MongoDB ke methods mein async/await lagta hi hai
+- Password hamesha .env mein rakho
+- .env ko .gitignore mein daalo — GitHub pe mat jaaye
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

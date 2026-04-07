@@ -140,3 +140,10 @@ server start root file me hoti ha server.js me
 
 
 bakcend per data jab bhejna hta hai hm use karte hai Postman
+
+
+
+//link of my cluster
+mongodb+srv://YT:emR0Yh0ODc5zYeYG@cluster0.frkqyzb.mongodb.net/
+
+///password=emR0Yh0ODc5zYeYG///

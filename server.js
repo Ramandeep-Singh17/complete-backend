@@ -1,10 +1,19 @@
-//server ko start karna 
 const app = require('./src/app');
+const connectDB = require('./src/db/db');
 
-app.listen(3000,()=>{
-    console.log("server is running at port 3000");
-})
-// listen me hm port ke sath ek callback function bhi dete hai jisme hm console.log karte hai
-//  ki server chal raha hai ya nahi.
-//jab bhi server start hoga then callback execute hoga aur console me message print hoga
-//  ki server is running at port 3000.
+connectDB()
+
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+
+
+
+
+
+
+// extra info
+// () => { }
+// ↑      ↑
+// params  kaam
