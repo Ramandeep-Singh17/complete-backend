@@ -1,0 +1,63 @@
+-----------------------------------
+🔐 Types of Authentication
+-----------------------------------
+
+Authentication ke mainly 2 types hote hain:
+
+1. Session-based Authentication  
+2. Token-based Authentication  
+
+👉 Abhi hum Token-based Authentication pe focus kar rahe hain
+
+
+-----------------------------------
+🎫 Token-Based Authentication
+-----------------------------------
+
+👉 Jab user register ya login karta hai:
+Server usse ek token (JWT) deta hai
+
+👉 Ye token frontend (client) me store hota hai
+
+
+-----------------------------------
+⚙️ Working Flow
+-----------------------------------
+
+1. User login/register karta hai  
+2. Server verify karta hai (email/password)  
+3. Server ek TOKEN generate karta hai  
+4. Client us token ko store kar leta hai  
+
+👉 Ab jab bhi user koi request kare:
+(jaise: create post, update profile, etc.)
+
+5. Client har request ke saath token bhejta hai  
+6. Server token ko verify karta hai  
+7. Agar token valid hai → request allow  
+8. Agar invalid hai → reject
+
+
+-----------------------------------
+⚠️ Important Correction (Very Important)
+-----------------------------------
+
+❌ "Server maanta hai ki token me jo data hai wahi user request kar raha hai"
+
+✅ Sahi baat:
+Server blindly trust nahi karta
+
+👉 Server token ko VERIFY karta hai (secret key se)
+👉 Agar token valid hai tabhi maanta hai ki user wahi hai
+
+👉 Matlab:
+Token trusted tabhi hai jab wo properly verify ho
+
+
+-----------------------------------
+🧠 Simple Line
+-----------------------------------
+
+Token = User ki identity card
+
+Har request me ye identity card dikhana padta hai
