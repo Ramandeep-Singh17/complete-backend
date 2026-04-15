@@ -1,0 +1,118 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ APP.JS — NOTES APP BACKEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Middleware — express.json()
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  app.use(express.json())
+
+- Postman (fake frontend) se jo data aata hai
+  express use khud read nahi kar sakta
+- isliye express.json() middleware lagate hain
+- yeh incoming data ko readable format me convert karta hai
+- app.use() = har request pe yeh middleware chalega
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 2. Notes Array
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const notes = []
+
+- notes store karne ke liye temporary array
+- abhi database nahi hai toh array use kar rahe hain
+- server band hone pe data chala jaata hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 3. POST /notes — Note Create karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  app.post('/notes', (req, res) => {
+      console.log(req.body)
+      res.send(req.body)
+  })
+
+- POST method isliye kyunki frontend se data aa raha hai
+- req.body = jo data Postman ne bheja
+- res.send() = wahi data wapas bhej do confirm karne ke liye
+
+  Request flow:
+  Postman → POST /notes → req.body me data aaya → res.send() se wapas bheja
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 4. module.exports
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  module.exports = app
+
+- app ko bahar bheja taaki server.js import kar sake
+- bina iske server.js app ko nahi dekh paata
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ QUICK REVISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  express.json()     →  body ka data readable banata hai
+  notes[]            →  temporary storage
+  req.body           →  frontend se aaya data
+  res.send()         →  response wapas bhejna
+  module.exports     →  app ko server.js ke liye export karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 5. GET /notes — Saare Notes Fetch karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  app.get('/notes', (req, res) => {
+      res.status(200).json({
+          message: "notes fetched successfully",
+          notes: notes
+      })
+  })
+
+- GET method isliye kyunki sirf data maang raha hai
+- res.status(200) = sab theek hai
+- res.json() = response JSON format me bheja
+  (res.send() se better hai API me)
+- notes array poora bhej diya frontend ko
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 6. DELETE /notes/:index — Ek Note Delete karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  app.delete('/notes/:index', (req, res) => {
+      const index = req.params.index
+      delete notes[index]
+      res.status(200).json({
+          message: "note deleted successfully"
+      })
+  })
+
+- :index = dynamic parameter — URL me badalta rehta hai
+  Example: /notes/0 → pehla note delete
+           /notes/2 → teesra note delete
+- req.params.index = URL se index uthaya
+- delete notes[index] = us index ka note hata diya
+- response me sirf message bheja — data nahi
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ HTTP STATUS CODES — Quick Reference
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  200  →  OK — sab theek hai
+  201  →  Created — naya data ban gaya
+  400  →  Bad Request — galat data aaya
+  404  →  Not Found — route mila nahi
+  500  →  Server Error — server side kuch toot gaya
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ FULL NOTES API — RECAP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  POST   /notes         →  note banana
+  GET    /notes         →  saare notes dekhna
+  DELETE /notes/:index  →  ek note delete karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

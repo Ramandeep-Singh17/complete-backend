@@ -1,0 +1,167 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ MODEL — note.model.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Schema Kya Hai?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Database ko pehle batana padta hai ki data kaisa dikhega
+- Yahi kaam Schema karta hai — ek blueprint hai
+- Jaise ghar banane se pehle naksha hota hai
+
+  const noteSchema = new mongoose.Schema({
+      title: String,
+      description: String,
+  })
+
+  title       → String type ka hoga
+  description → String type ka hoga
+  __id        → MongoDB khud dega (unique id)
+  __v         → version — Mongoose khud lagata hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 2. Model Kya Hai?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const noteModel = mongoose.model("note", noteSchema)
+
+- Model schema ke upar banta hai
+- Isi model se hum database mein CRUD operations karte hain
+- "note" → MongoDB mein collection ka naam hoga "notes"
+  (MongoDB khud plural kar deta hai)
+
+  Schema  = blueprint (data kaisa dikhega)
+  Model   = tool     (data ke saath kaam karna)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 3. module.exports
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  module.exports = noteModel
+
+- noteModel ko bahar bheja taaki
+  app.js mein import karke use kar sakein
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ QUICK REVISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  mongoose.Schema()  →  data ka blueprint banao
+  mongoose.model()   →  CRUD karne ka tool banao
+  module.exports     →  bahar bhejo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SCHEMA vs MODEL — EASY SAMAJHNE KA TARIKA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SCHEMA:
+  Hm database ko ek example type dikhate hain
+  ki hamara data aisa dikhega — yahi hai Schema
+
+  const noteSchema = new mongoose.Schema({
+      title: String,
+      description: String,
+  })
+
+  Matlab database ko bol rahe hain:
+  "Bhai mera data aisa aayega:
+  {
+      title: "Mera pehla note",
+      description: "Yeh test hai"
+  }"
+
+  Schema = Form ka format
+  ┌─────────────────────────┐
+  │ Title:       [_______]  │
+  │ Description: [_______]  │
+  └─────────────────────────┘
+  Har note is form ke hisaab se hi bhara jayega!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MODEL:
+  Schema ke upar bana hua tool hai
+  jisse hum actually database mein kaam karte hain
+
+  const noteModel = mongoose.model("note", noteSchema)
+
+  Schema = Zomato ka order form
+           (naam, address, items — format fix hai)
+
+  Model  = Woh system jo actually kaam karta hai:
+           noteModel.create()  → note banao
+           noteModel.find()    → notes dekho
+           noteModel.delete()  → note hatao
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ONE LINERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Schema → database ko batao "data kaisa dikhega"
+  Model  → schema ke upar kaam karne wala tool
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ CRUD OPERATIONS — app.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4 APIs:
+  POST   /notes      → note banana
+  GET    /notes      → sare notes lana
+  PATCH  /notes/:id  → note update karna
+  DELETE /notes/:id  → note delete karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. POST — Note Banana
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const data = req.body  →  frontend se data liya
+  await noteModel.create({title, description})  →  DB mein save kiya
+  res.status(201)  →  201 = naya data create hua
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 2. GET — Sare Notes Lana
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  await noteModel.find({})  →  sare notes laao
+
+  find()    → hamesha array deta hai
+              notes hain → array mein
+              koi nahi  → empty array []
+  findOne() → ek object deta hai
+              mila → object
+              nahi mila → null
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 3. DELETE — Note Hatana
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const id = req.params.id  →  URL se id liya
+  await noteModel.findByIdAndDelete({_id: id})  →  us id ka note delete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 4. PATCH — Note Update Karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const id = req.params.id
+  const description = req.body.description
+  await noteModel.findOneAndUpdate({_id:id}, {description})
+  → pehle id se note dhundha, phir description update kiya
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ MONGOOSE METHODS — QUICK REF
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  create()            → naya document banana
+  find()              → sare documents lana
+  findOne()           → ek document lana
+  findByIdAndDelete() → id se dhundh ke delete
+  findOneAndUpdate()  → dhundh ke update karna
+
+  Sab mein async/await lagta hai!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

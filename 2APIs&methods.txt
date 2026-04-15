@@ -1,0 +1,90 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ API — Application Programming Interface
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Kya hai?
+  Do alag applications ke beech communicate karne ka
+  rules aur commands ka set — wahi API hai.
+  Example: Frontend aur Backend ek doosre se API ke through baat karte hain.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TYPE — REST API
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full form: Representational State Transfer
+
+Rule #1 — HTTP for Communication
+  Frontend aur Backend ko connect karne ke liye
+  HTTP protocol use hota hai.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ HTTP METHODS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  GET     → Server se data fetch karna
+  POST    → Server pe naya data bhejna
+  PATCH   → Server pe already existing data update karna
+  DELETE  → Server pe data delete karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PRODUCTION SERVER STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Folder Structure:
+  project/
+  ├── server.js        → server START karna (root file)
+  └── src/
+      └── app.js       → server CREATE karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ src/app.js — Server Create karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const express = require('express');
+  const app = express();
+  module.exports = app;
+
+- yahan sirf server instance banaya
+- module.exports se app ko bahar bheja
+  taaki server.js use kar sake
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ server.js — Server Start karna
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const app = require('./src/app');
+
+  app.listen(3000, () => {
+      console.log("server is running at port 3000");
+  })
+
+- app.js se app import kiya
+- listen() se server port 3000 pe start kiya
+- listen me callback diya — jab server start ho
+  tab console me message print ho
+  ki server chal raha hai ya nahi
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Kyun 2 files? — Important Concept
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- app.js  = sirf server ki setting aur routes
+- server.js = sirf server start karna
+
+  Fayda: Code clean rehta hai
+         Testing easy hoti hai
+         Production me yahi standard follow hota hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ HTTP METHODS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  GET     → Server se data fetch karna
+  POST    → Server pe naya data bhejna
+  PATCH   → Server pe already existing data update karna
+  DELETE  → Server pe data delete karna
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

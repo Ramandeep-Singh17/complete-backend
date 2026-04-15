@@ -1,0 +1,149 @@
+npm init-y => nodejs application initiate
+
+npm i express=> install express package
+
+╔══════════════════════════════════════════════════════════════╗
+║           BACKEND WITH NODE.JS + EXPRESS — NOTES            ║
+║                                     
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TOPIC 1 — EXPRESS KYA HAI?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Express ek Node.js ka framework hai jo backend banana asaan bana deta hai.
+- Isse hum server banana, routes handle karna, aur requests/responses manage
+  karna — sab ek jagah se kar sakte hain.
+
+Installation:
+  npm install express
+
+Import karna:
+  const express = require('express');
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TOPIC 2 — SERVER INSTANCE BANANA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  const app = express();
+
+- express() ko call karne se ek server instance banta hai.
+- Is instance ko hum 'app' naam dete hain (convention hai, kuch bhi rakh sakte ho).
+- Aage saari cheezein isi 'app' object ke through hogi — routes, middleware, sab.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TOPIC 3 — REQUEST AUR RESPONSE (req, res)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- req  → Request Object
+         Frontend se jo bhi data aata hai (form data, query params, headers, etc.)
+         wo sab req ke andar hota hai.
+         Example: req.body, req.params, req.query
+
+- res  → Response Object
+         Jo bhi hum wapas frontend ko bhejna chahte hain — text, JSON, HTML —
+         wo sab res ke through bhejte hain.
+         Example: res.send(), res.json(), res.status()
+
+Simple samajhna:
+  req = "User ne kya maanga?"
+  res = "Hum kya de rahe hain?"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TOPIC 4 — ROUTES (app.get)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Route ka matlab hai — "Agar user is URL pe aaye, toh ye karo."
+
+Syntax:
+  app.get('URL path', (req, res) => {
+      // yahan kaam karo
+  });
+
+Tere code mein:
+
+  1 Home Route  →  app.get('/', ...)
+     - '/' matlab root URL — jaise localhost:3000/
+     - Yahan res.send('Hello World') se simple text bheja
+
+  2 About Route  →  app.get('/about', ...)
+     - '/about' matlab localhost:3000/about
+     - Yahan 'This is about page' bheja
+
+KEY POINT:
+  - GET request tab hoti hai jab user browser mein URL type karke kuch maangta hai.
+  - Baad mein POST, PUT, DELETE bhi aayenge — wo data bhejne/update/delete ke liye.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TOPIC 5 — SERVER START KARNA (app.listen)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  app.listen(3000);
+
+- Ye line server ko start karti hai aur 3000 port pe sunna (listen) shuru karta hai.
+- Port ek "darwaza" hota hai — internet ko server se connect karne ke liye.
+
+REAL LIFE ANALOGY:
+  Socho server ek building hai.
+  Port us building ka darwaza number hai.
+  Sirf wahi log andar aa sakte hain jo sahi darwaze se aayein.
+
+COMMON PORTS:
+  ┌──────────────┬────────────────────────────────┐
+  │ Port Number  │ Use                            │
+  ├──────────────┼────────────────────────────────┤
+  │ 3000         │ Local development (Express)    │
+  │ 80           │ HTTP (websites)                │
+  │ 443          │ HTTPS (secure websites)        │
+  │ 25           │ Email (SMTP)                   │
+  │ 3306         │ MySQL Database                 │
+  │ 27017        │ MongoDB Database               │
+  └──────────────┴────────────────────────────────┘
+
+BETTER PRACTICE — callback add karo:
+  app.listen(3000, () => {
+      console.log('Server running on port 3000');
+  });
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ COMPLETE FLOW — EK BAAR MEIN SAMJHO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  User browser mein URL type karta hai
+           ↓
+  Request server pe aati hai
+           ↓
+  Express check karta hai — "kaunsa route match ho raha hai?"
+           ↓
+  Match hone pe wo function run hota hai
+           ↓
+  res.send() se response wapas bheja jaata hai
+           ↓
+  Browser mein content dikhta hai
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ QUICK REVISION — CHEAT SHEET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  require('express')     →  express import karo
+  express()              →  server instance banao
+  app.get(path, fn)      →  GET route define karo
+  req                    →  frontend se aaya data
+  res.send()             →  kuch wapas bhejo
+  app.listen(port)       →  server start karo
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+production level me server  rahta hai src folder ke appjs me and 
+app.js ka kaam hai server ko create karna 
+server start root file me hoti ha server.js me
+
+
+bakcend per data jab bhejna hta hai hm use karte hai Postman
+
+
+
+//link of my cluster
+mongodb+srv://YT:emR0Yh0ODc5zYeYG@cluster0.frkqyzb.mongodb.net/
+
+///password=emR0Yh0ODc5zYeYG///
